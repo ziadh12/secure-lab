@@ -1,0 +1,31 @@
+rules:
+  # ============================
+  #  SQL INJECTION - BAD
+  # ============================
+  - id: mutillidae-php-sqli-raw
+    message: "Possible SQL injection: raw user input used inside SQL query"
+    severity: ERROR
+    languages: [php]
+    patterns:
+      - pattern: mysqli_query($CONN, $QUERY)
+      - metavariable-pattern:
+          metavariable: $QUERY
+          pattern-regex: '(\$_GET\[[^\]]+\]|\$_POST\[[^\]]+\])'
+    metadata:
+      cwe: "CWE-89"
+      category: "sqli"
+
+
+  - id: mutillidae-php-xss-echo
+    message: "Possible XSS: echoing unsanitized user input"
+    severity: ERROR
+    languages: [php]
+    patterns:
+      - pattern: echo $X;
+      - metavariable-pattern:
+          metavariable: $X
+          pattern-regex: '(\$_GET\[[^\]]+\]|\$_POST\[[^\]]+\])'
+    metadata:
+      cwe: "CWE-79"
+      category: "xss"
+
